@@ -16,6 +16,6 @@
 * [期待]
 
 ##演示
-![()](http://www.html8.cn/wp-content/uploads/2016/04/demo01.gif)
+![()](http://www.html8.cn/wp-content/uploads/2016/04/deomo01.gif)
 
 
