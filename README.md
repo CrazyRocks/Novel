@@ -1,6 +1,6 @@
 # Novel
 在线小说阅读
-![(logo)](http://www.html8.cn/wp-content/uploads/2016/04/icon-80.png)
+![(logo)](http://www.html8.cn/wp-content/uploads/2016/04/demo2.png)
 
 ## Demo
 * function
