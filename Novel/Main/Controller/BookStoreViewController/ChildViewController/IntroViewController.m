@@ -217,7 +217,12 @@
 {
     ReadingViewController *read = [ReadingViewController new];
     
-    read.index = self.single.index - 1;
+    //判断是否加入了书架
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:self.rankingBook.title])
+    {
+        //已经加入
+        read.index = self.single.index - 1;
+    }
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:read];
     

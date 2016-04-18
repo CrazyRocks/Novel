@@ -466,30 +466,35 @@
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSArray *cells = [self.tableView visibleCells];
-    
-    if (cells.count == 1)
+    //判断是否加入了书架 --只有加入书架的才会保存进度
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:self.single.title])
     {
-        if (scrollView.contentOffset.y > - 20.0)
+        //已经加入
+        NSArray *cells = [self.tableView visibleCells];
+        
+        if (cells.count == 1)
+        {
+            if (scrollView.contentOffset.y > - 20.0)
+            {
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setInteger:scrollView.contentOffset.y forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+                [defaults synchronize];//同步
+            }
+        }
+        
+        if (cells.count == 2)
         {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setInteger:scrollView.contentOffset.y forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
-            [defaults synchronize];//同步
+            [defaults setInteger:0.0f - 20 forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+            
+            NSMutableArray *dictAarray = [NSMutableArray arrayWithContentsOfFile:bookShelf];
+            
+            NSMutableDictionary *item = [dictAarray objectAtIndex:self.single.indexBook];
+            
+            [item setValue:[NSString stringWithFormat:@"%ld",self.single.index] forKey:@"index"];
+            
+            [dictAarray writeToFile:bookShelf atomically:YES];
         }
-    }
-    
-    if (cells.count == 2)
-    {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setInteger:0.0f forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
-        
-        NSMutableArray *dictAarray = [NSMutableArray arrayWithContentsOfFile:bookShelf];
-        
-        NSMutableDictionary *item = [dictAarray objectAtIndex:self.single.indexBook];
-        
-        [item setValue:[NSString stringWithFormat:@"%ld",self.single.index] forKey:@"index"];
-        
-        [dictAarray writeToFile:bookShelf atomically:YES];
     }
 }
 
@@ -521,36 +526,40 @@
         
         [self.tableView reloadData];
         
-        if (self.single.isAtIntroVc == YES)
+        NSInteger y = [[NSUserDefaults standardUserDefaults] integerForKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:self.single.title])
         {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:self.single.title])
+            if (self.single.isReadAtDirView == NO)
             {
                 //已经加入书架的，那么按保存的进度读取
-                NSInteger y = [[NSUserDefaults standardUserDefaults] integerForKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
-                [self.tableView setContentOffset:CGPointMake(0.0f, y) animated:NO];
+                if (![[NSUserDefaults standardUserDefaults] integerForKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]])
+                {
+                    [self.tableView setContentOffset:CGPointMake(0.0f, -20.0f) animated:NO];
+                }
+                else
+                {
+                    [self.tableView setContentOffset:CGPointMake(0.0f, y) animated:NO];
+                }
             }
             else
             {
                 [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];//跳转到最开始
+                //存储下偏移量，因为这时候tableview不滚动是不会调用scrollViewDidScroll方法的
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setInteger:0.0f - 20.0f forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
             }
         }
         else
         {
-            if (self.single.isReadAtDirView == YES)
-            {
-                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];//跳转到最开始
-            }
-            else
-            {
-                NSInteger y = [[NSUserDefaults standardUserDefaults] integerForKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
-                [self.tableView setContentOffset:CGPointMake(0.0f, y) animated:NO];
-            }
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];//跳转到最开始
         }
         
     } error:^(NSError *error) {
         
     }];
 }
+
 
 #pragma ReaderTopDelegate
 - (void)backBVc
@@ -560,7 +569,7 @@
     
     [self.totolList removeAllObjects];
     self.totolList = nil;
-    
+    self.single.isReadAtDirView = NO;
     
     if ([self.delegate respondsToSelector:@selector(reloadData:)])
     {

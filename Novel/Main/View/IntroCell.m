@@ -113,9 +113,37 @@
     return self;
 }
 
-
+/**
+ *  开始阅读--继续阅读
+ */
 - (void)startRead
 {
+    //判断是否加入了书架
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:self.rankingBook.title])
+    {
+        //已经加入
+        NSMutableArray *dictArray = [NSMutableArray arrayWithContentsOfFile:filePath];
+        
+        NSMutableArray *array = [NSMutableArray array];
+        
+        [dictArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            BookShelf *books = [BookShelf bookShelfWithDict:obj];
+            
+            if ([books.title isEqualToString:self.rankingBook.title])
+            {
+                [array addObject:books.index];
+            }
+            
+        }];
+        
+        self.single.index = [[array lastObject] integerValue];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.startReadBtn setTitle:@"继续阅读" forState:UIControlStateNormal];
+        });
+    }
+    
     [self.delegate startReading];
 }
 /**

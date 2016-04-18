@@ -47,16 +47,69 @@
         
         NSMutableArray *bookArray = [NSMutableArray array];
         
+        //获取Documents文件夹下所有的文件名
+        NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+        NSArray *fileNameList=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:docPath error:nil];
+        
+        NSMutableArray *bookShelf = [NSMutableArray array];
+        
         for (NSDictionary *dict in dictArray)
         {
             BookShelf *book = [BookShelf bookShelfWithDict:dict];
             [bookArray addObject:book];
+            [bookShelf addObject:[NSString stringWithFormat:@"%@.plist",book.title]];
+            [bookShelf addObject:book.coverImage];
         }
         _bookList = bookArray;
+        
+        [bookShelf addObjectsFromArray:fileNameList];
+        [bookShelf addObject:@"bookShelf.plist"]; //书单不能删除
+        
+        NSMutableArray *dateMutablearray = [NSMutableArray array];
+        
+        for (int i = 0; i < bookShelf.count; i++)
+        {
+            NSString *string = bookShelf[i];
+            
+            NSMutableArray *tempArray = [@[] mutableCopy];
+            
+            [tempArray addObject:string];
+            
+            for (int j = i+1; j < bookShelf.count; j ++)
+            {
+                NSString *jstring = bookShelf[j];
+                
+                if([string isEqualToString:jstring])
+                {
+                    [tempArray addObject:jstring];
+                    
+                    // [array removeObjectAtIndex:j]; //内循环做删除行为 导致总对比次数不完整 此动作应在循环外处理
+                    
+                }
+                
+            }
+            if ([tempArray count] > 1)
+            {
+                
+                [dateMutablearray addObject:tempArray];
+                
+                [bookShelf removeObjectsInArray:tempArray];
+                
+                i -= 1;    //去除重复数据 新数组开始遍历位置不变
+            }
+        }
+        //删除不是书架的数据文件
+        NSFileManager *mgr = [NSFileManager defaultManager];
+        for (int i = 0; i < bookShelf.count; i++)
+        {
+            NSString *fileName = [docPath stringByAppendingPathComponent:bookShelf[i]];
+            [mgr removeItemAtPath:fileName error:nil];
+        }
+        
+        
     }
     return _bookList;
 }
-
 - (void)setupTableView
 {
     if (!_tableView)
