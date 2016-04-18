@@ -8,7 +8,7 @@
     * 小说介绍
     * 目录
     * 在线阅读功能
-    *记录当前加入书架的阅读进度
+    * 记录当前加入书架的阅读进度
 * 使用框架AFNetworking、SDWebImage、MJRefresh、MBProgressHUD、FDTemplateLayoutCell、JDStatusBarNotification
 
 * Examples
