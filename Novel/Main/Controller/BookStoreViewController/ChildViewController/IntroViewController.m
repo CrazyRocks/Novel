@@ -52,6 +52,9 @@
     self.single.title = self.rankingBook.title;
     
     self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
+    
+    
+    [self.view addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(backVc)]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
