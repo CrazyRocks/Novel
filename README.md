@@ -17,6 +17,7 @@
 
 ##演示
 ![()](http://www.html8.cn/wp-content/uploads/2016/04/deomo01.gif)
-!*看不了可以点击http://www.html8.cn/wp-content/uploads/2016/04/deomo01.gif
+
+* 看不了可以点击http://www.html8.cn/wp-content/uploads/2016/04/deomo01.gif
 
 
