@@ -8,10 +8,10 @@
 #define bookShelf [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"bookShelf.plist"]
 
 #define myStatusBar @"myStatusBar"
+
 #import "ReadingViewController.h"
 #import "Public.h"
 #import "BookChapter.h"
-#import "JDStatusBarNotification.h"
 #import "UITableView+FDTemplateLayoutCell.h"
 #import "ReadCell.h"
 #import "IntroViewController.h"
@@ -28,14 +28,19 @@
 #import "DiretoryView.h"
 
 @interface ReadingViewController ()<ReaderTopDelegate,ReaderToolBarDelegate,UITableViewDataSource,UITableViewDelegate>
-
+{
+    // 不使用 @synthesize 只在这里写表示这个属性是私有属性
+    // 不断给它赋值时不会改变引用计数
+    CGFloat contentOffsetY;
+}
 @property(nonatomic,strong) UITableView *tableView;
 
 @property(nonatomic,strong) NSMutableArray *group;
 
 @property(nonatomic,strong) NSMutableArray *totolList; //总章节
 
-@property(nonatomic,assign) BOOL isShowNavigationBar; //控制statusBar的显示与隐藏
+@property(nonatomic,assign) BOOL isShowNavigationBar; //
+@property(nonatomic,assign) BOOL isShowStatusBar; //控制statusBar的显示与隐藏
 
 @property (nonatomic, weak) ReaderToolBar *toolBar;
 
@@ -114,6 +119,8 @@
     
     [self settingTableView];
     
+    self.single.contentOffsetUp = 0;
+    self.single.contentoffsetDown = 0;
 }
 
 //tableView
@@ -140,7 +147,7 @@
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(preChapter)];
     
     //开始刷新
-    [self jumpDir:_index];//第一章
+    [self jumpDir:_index];//第n章
     
     //加载更多
     self.tableView.mj_footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(nextChapter)];
@@ -152,19 +159,11 @@
 {
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;  //导航栏的背景色是黑色
     self.isShowNavigationBar = YES;
-    
-    //添加自定义的statusBar
-    [JDStatusBarNotification addStyleNamed:myStatusBar prepare:^JDStatusBarStyle *(JDStatusBarStyle *style) {
-        style.barColor = Color(161, 160, 136);// 黄色
-        style.font = [UIFont systemFontOfSize:14];
-        style.animationType = JDStatusBarAnimationTypeNone;
-        
-        return style;
-    }];
+    self.isShowStatusBar = YES;//刚打开隐藏
 }
 - (BOOL)prefersStatusBarHidden
 {
-    return NO;
+    return self.isShowStatusBar;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -176,7 +175,6 @@
 {
     [super viewWillAppear:animated];
     
-    [JDStatusBarNotification showWithStatus:@"" styleName:myStatusBar];
     
     [self.navigationController setNavigationBarHidden:_isShowNavigationBar animated:YES];  //BOOL默认NO
 }
@@ -184,9 +182,14 @@
 
 - (void)hideReaderSettingBar
 {
-    [self.tableView reloadData];
-    
     [UIView animateWithDuration:0 animations:^{
+        
+        self.isShowStatusBar = YES;
+        [self setNeedsStatusBarAppearanceUpdate];
+        
+        _tableView.frame = CGRectMake(0, 0, ScreenW, ScreenH-5);
+        
+        _topBar.frame = CGRectMake(0, 20, ScreenW, 44);
         
         _topBar.frame = CGRectMake(0, -CGRectGetHeight(_topBar.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(_topBar.frame));
         _toolBar.frame = CGRectMake(0, CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(_toolBar.frame));
@@ -208,8 +211,6 @@
 - (void)showReaderSettingBar:(NSIndexPath *)indexPath
 {
     _indexPath = indexPath;
-    
-    [JDStatusBarNotification dismiss];
     
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     
@@ -255,7 +256,13 @@
     
     
     [UIView animateWithDuration:0.2 animations:^{
+        self.isShowStatusBar = NO;
+        [self setNeedsStatusBarAppearanceUpdate];
+        
+        _tableView.frame = CGRectMake(0, -20, ScreenW, ScreenH-5);
+        
         _topBar.frame = CGRectMake(0, 20, ScreenW, 44);
+        
         _toolBar.frame = CGRectMake(0, CGRectGetHeight(coverView.frame) - CGRectGetHeight(_toolBar.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(_toolBar.frame));
     }];
 }
@@ -454,6 +461,29 @@
         cell.content = content;
     }];
 }
+#pragma mark - 组标题-章节名
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ScreenW, 20)];
+    
+    headerView.backgroundColor = Color(161, 160, 136);// 黄色
+    
+    BookChapter *group = self.group[section];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:headerView.bounds];
+    label.text = group.text;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont fontWithName:@"STHeitiSC-Light" size:14.f];
+    
+    [headerView addSubview:label];
+    
+    return headerView;
+}
+//heightForHeaderInSection高度
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 20;
+}
 
 
 #pragma mark - tableViewdelegate
@@ -466,37 +496,91 @@
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:self.single.title]) return;
     //判断是否加入了书架 --只有加入书架的才会保存进度
     if ([[NSUserDefaults standardUserDefaults] boolForKey:self.single.title])
     {
-        //已经加入
-        NSArray *cells = [self.tableView visibleCells];
-        
-        if (cells.count == 1)
-        {
-            if (scrollView.contentOffset.y > - 20.0)
+        if (scrollView.dragging)
+        { // 拖拽
+            if ((scrollView.contentOffset.y - contentOffsetY) > 5.0f)
             {
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setInteger:scrollView.contentOffset.y forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
-                [defaults synchronize];//同步
+                // 向上拖拽 -->向下滑动
+                NSArray *cells = [self.tableView visibleCells];
+                
+                if (cells.count == 1)
+                {
+                    if (scrollView.contentOffset.y > 0)
+                    {
+                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                        
+                        if (self.single.contentoffsetDown > 0)
+                        {
+                            [defaults setInteger:scrollView.contentOffset.y - self.single.contentoffsetDown forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+                        }
+                        else
+                        {
+                            [defaults setInteger:scrollView.contentOffset.y forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+                        }
+                        
+                        [defaults removeObjectForKey:@"first"];
+                        [defaults synchronize];//同步
+                    }
+                }
+                
+                else if (cells.count == 2)
+                {
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    
+                    NSMutableArray *dictAarray = [NSMutableArray arrayWithContentsOfFile:bookShelf];
+                    
+                    [defaults setInteger:0.0f forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+                    
+                    if (![defaults boolForKey:@"first"])
+                    {
+                        [defaults setBool:YES forKey:@"first"];
+                        
+                        UITableViewCell *cell = [cells firstObject];
+                        
+                        self.single.contentoffsetDown = CGRectGetMaxY(cell.frame);
+                        
+                    }
+                    
+                    NSMutableDictionary *item = [dictAarray objectAtIndex:self.single.indexBook];
+                    
+                    [item setValue:[NSString stringWithFormat:@"%ld",self.single.index] forKey:@"index"];
+                    
+                    [dictAarray writeToFile:bookShelf atomically:YES];
+                    
+                }
+                
+                
             }
-        }
-        
-        if (cells.count == 2)
-        {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults setInteger:0.0f - 20 forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+            //
+            else if ((contentOffsetY - scrollView.contentOffset.y) > 5.0f)
+            {
+                // 向下拖拽 --向上滑动
+                //暂时不做啦
+                //
+            }
             
-            NSMutableArray *dictAarray = [NSMutableArray arrayWithContentsOfFile:bookShelf];
-            
-            NSMutableDictionary *item = [dictAarray objectAtIndex:self.single.indexBook];
-            
-            [item setValue:[NSString stringWithFormat:@"%ld",self.single.index] forKey:@"index"];
-            
-            [dictAarray writeToFile:bookShelf atomically:YES];
         }
     }
 }
+
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    //开始拖拽
+    contentOffsetY = scrollView.contentOffset.y;
+}
+
+// 完成拖拽(滚动停止时调用此方法，手指离开屏幕前)
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+//{
+//    // NSLog(@"scrollViewDidEndDragging");
+//    oldContentOffsetY = scrollView.contentOffset.y;
+//    NSLog(@"停止拖拽");
+//}
 
 
 //目录选择
@@ -535,7 +619,7 @@
                 //已经加入书架的，那么按保存的进度读取
                 if (![[NSUserDefaults standardUserDefaults] integerForKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]])
                 {
-                    [self.tableView setContentOffset:CGPointMake(0.0f, -20.0f) animated:NO];
+                    [self.tableView setContentOffset:CGPointMake(0.0f, 0.0f) animated:NO];
                 }
                 else
                 {
@@ -547,7 +631,7 @@
                 [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];//跳转到最开始
                 //存储下偏移量，因为这时候tableview不滚动是不会调用scrollViewDidScroll方法的
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setInteger:0.0f - 20.0f forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
+                [defaults setInteger:0.0f forKey:[NSString stringWithFormat:@"%@%@",self.single.title,token]];
             }
         }
         else
@@ -565,10 +649,11 @@
 - (void)backBVc
 {
     [self hideReaderSettingBar];
-    [JDStatusBarNotification dismiss];
     
     [self.totolList removeAllObjects];
     self.totolList = nil;
+    [self.group removeAllObjects];
+    self.group = nil;
     self.single.isReadAtDirView = NO;
     
     if ([self.delegate respondsToSelector:@selector(reloadData:)])
@@ -584,9 +669,11 @@
     self.single.isAtIntroVc = NO;
     self.single.isReadAtDirView = NO;
     [self hideReaderSettingBar];
-    [JDStatusBarNotification dismissAnimated:YES];//删除状态栏
     
     self.tableView.scrollEnabled = NO; //tableView不能滑动
+    
+    self.isShowStatusBar = NO;
+    [self setNeedsStatusBarAppearanceUpdate];
     
     DiretoryView *diretoryView = [[DiretoryView alloc] initWithDirtoryView];
     
@@ -610,6 +697,8 @@
 - (void)closeView
 {
     [_tableView reloadData];
+    self.isShowStatusBar = YES;
+    [self setNeedsStatusBarAppearanceUpdate];
     //注册通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView:) name:@"dirtory" object:nil];
     

@@ -6,11 +6,8 @@
 //  Copyright © 2016年 John. All rights reserved.
 //
 #define filePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"bookShelf.plist"]
-#define myStatusBar @"myStatusBar"
-
 
 #import "ReadCell.h"
-#import "JDStatusBarNotification.h"
 #import "Single.h"
 #import "Public.h"
 
@@ -49,7 +46,6 @@
 - (void)setBookChapter:(BookChapter *)bookChapter
 {
     _bookChapter = bookChapter;
-    [JDStatusBarNotification showWithStatus:bookChapter.text styleName:myStatusBar];//状态栏
     
     [_item setValue:bookChapter.index forKey:@"index"];
     
@@ -71,8 +67,11 @@
     // Initialization code
      self.contentView.bounds = [UIScreen mainScreen].bounds;
     
-    _bookShelf = [NSMutableArray arrayWithContentsOfFile:filePath];
-    _item = [_bookShelf objectAtIndex:self.single.indexBook];
+     _bookShelf = [NSMutableArray arrayWithContentsOfFile:filePath];
+    if (_bookShelf.count > 0)
+    {
+        _item = [_bookShelf objectAtIndex:self.single.indexBook];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -470,7 +470,6 @@
 {
     CGFloat width = MAX(rect.size.width, rect.size.height);
     CGFloat height = MIN(rect.size.width, rect.size.height);
-    
     // on ios7 fix position, if statusBar has double height
     CGFloat yPos = 0;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 && height > 20.0) {

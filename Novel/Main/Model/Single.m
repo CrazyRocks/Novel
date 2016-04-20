@@ -37,6 +37,8 @@
         self.isReadAtDirView = NO;
         self.indexBook = 0;
         self.index = 0;
+        self.contentOffsetUp = 0;
+        self.contentoffsetDown = 0;
         self.books = nil;
     }
     return self;
