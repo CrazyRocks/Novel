@@ -7,11 +7,13 @@
 //
 
 #import "TabBarViewController.h"
-#import "TabBar.h"
+#import "NavigationController.h"
+#import "BookShelfViewController.h"
+#import "MainViewController.h"
+#import "BookListViewController.h"
+#import "SearchViewController.h"
 
-@interface TabBarViewController ()<TabBarDelegate>
-
-@property(nonatomic,weak) UIButton *buttonSelect;
+@interface TabBarViewController ()
 
 @end
 
@@ -22,26 +24,50 @@
 {
     [super viewDidLoad];
     
-    // 1.添加自己的tabbar
-    TabBar *myTabBar = [[TabBar alloc] init];
-    myTabBar.delegate = self;
-    myTabBar.frame = self.tabBar.bounds;
-    [self.tabBar addSubview:myTabBar];
-    
-    
-    // 添加对应个数的按钮
-    for (int i = 0; i< self.viewControllers.count; i++)
-    {
-        NSString *name = [NSString stringWithFormat:@"TabBar%d",i+1];
-        NSString *selName = [NSString stringWithFormat:@"TabBar%dSel",i+1];
-        [myTabBar addTabButtonWithName:name andSelectImage:selName];
-    }
-    
-    self.tabBar.tintColor = [UIColor redColor]; //设置选中颜色
+    [self setUpAllChildViewController];
 }
--(void)tabBarDelegate:(TabBar *)tabBar didSelectButton:(NSInteger)from to:(NSInteger)to
+
+
+- (void)setUpAllChildViewController
 {
-    self.selectedIndex = to; //选中最新的
+    //书架
+    BookShelfViewController *bookShelf = [[BookShelfViewController alloc] init];
+    [self setUpOneChildController:bookShelf image:[UIImage imageNamed:@"TabBar1"] selImage:[UIImage imageNamed:@"TabBar1Sel"] title:@"书架"];
+    
+    //书城
+    MainViewController *main = [[MainViewController alloc] init];
+    [self setUpOneChildController:main image:[UIImage imageNamed:@"TabBar2"] selImage:[UIImage imageNamed:@"TabBar2Sel"] title:@"书城"];
+    //书单
+    BookListViewController *bookList = [[BookListViewController alloc] init];
+    [self setUpOneChildController:bookList image:[UIImage imageNamed:@"TabBar3"] selImage:[UIImage imageNamed:@"TabBar3Sel"] title:@"书单"];
+    //搜书
+    SearchViewController *search = [[SearchViewController alloc]init];
+    [self setUpOneChildController:search image:[UIImage imageNamed:@"TabBar4"] selImage:[UIImage imageNamed:@"TabBar4Sel"] title:@"搜书"];
+}
+//
+- (void)setUpOneChildController:(UIViewController *)viewController image:(UIImage *)iamge selImage:(UIImage *)selImage title:(NSString *)title
+{
+    NavigationController *nav = [[NavigationController alloc] initWithRootViewController:viewController];
+    
+    nav.title = title;
+    
+    NSDictionary *dic = @{
+                          NSForegroundColorAttributeName: [UIColor colorWithRed:243/255.0 green:0/255.0 blue:0/255.0 alpha:1],
+                          
+                          };
+    [nav.tabBarItem setTitleTextAttributes:dic forState:UIControlStateSelected];
+    
+    nav.tabBarItem.image = iamge;
+    
+    //设置高亮
+    // 默认情况下，tabbar会选中的图片进行渲染成蓝色
+    selImage = [selImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    nav.tabBarItem.selectedImage = selImage;
+    
+    viewController.navigationItem.title = title;
+    
+    [self addChildViewController:nav];
 }
 
 @end

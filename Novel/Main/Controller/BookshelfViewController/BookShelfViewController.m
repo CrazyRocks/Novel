@@ -128,8 +128,6 @@
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;  //导航栏的背景色是黑色
     
-    self.title = @"书架";
-    
     [self setupTableView];
     
 }

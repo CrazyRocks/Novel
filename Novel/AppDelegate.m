@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TabBarViewController.h"
 
 @interface AppDelegate ()
 
@@ -18,6 +19,26 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    // 设置状态栏样式
+    application.statusBarStyle = UIStatusBarStyleLightContent;
+    application.statusBarHidden = NO;
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    //1.0创建导航控制器
+    TabBarViewController *tab = [[TabBarViewController alloc] init];
+    
+    
+    //设置窗口的根控制器
+    self.window.rootViewController = tab;
+    
+    [self.window makeKeyAndVisible];
+    
+    // 启动画面更久
+    //    sleep(2);
+    
+    
     return YES;
 }
 
@@ -26,13 +47,10 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     
 }
-
+//应用直接在管理器杀掉--调用的方法
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    
-    
-   //应用直接在管理器杀掉--调用的方法
     
 }
 

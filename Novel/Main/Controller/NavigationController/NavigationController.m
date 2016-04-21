@@ -42,10 +42,10 @@
 /**
  *  重写这个方法，能拦截所有的Push操作
  */
--(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    viewController.hidesBottomBarWhenPushed = YES;
-    [super pushViewController:viewController animated:animated];
-}
+//-(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//    viewController.hidesBottomBarWhenPushed = YES;
+//    [super pushViewController:viewController animated:animated];
+//}
 
 @end

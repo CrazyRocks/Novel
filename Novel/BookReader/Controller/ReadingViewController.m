@@ -29,8 +29,6 @@
 
 @interface ReadingViewController ()<ReaderTopDelegate,ReaderToolBarDelegate,UITableViewDataSource,UITableViewDelegate>
 {
-    // 不使用 @synthesize 只在这里写表示这个属性是私有属性
-    // 不断给它赋值时不会改变引用计数
     CGFloat contentOffsetY;
 }
 @property(nonatomic,strong) UITableView *tableView;
@@ -573,15 +571,6 @@
     //开始拖拽
     contentOffsetY = scrollView.contentOffset.y;
 }
-
-// 完成拖拽(滚动停止时调用此方法，手指离开屏幕前)
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    // NSLog(@"scrollViewDidEndDragging");
-//    oldContentOffsetY = scrollView.contentOffset.y;
-//    NSLog(@"停止拖拽");
-//}
-
 
 //目录选择
 - (void)jumpDir:(NSInteger)index

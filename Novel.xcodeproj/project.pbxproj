@@ -19,15 +19,12 @@
 		5257A4061CA176DF006D7EF4 /* ReaderSettingBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5257A4051CA176DF006D7EF4 /* ReaderSettingBar.xib */; };
 		5257A4091CA176F1006D7EF4 /* ReaderSettingBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5257A4081CA176F1006D7EF4 /* ReaderSettingBar.m */; };
 		525A46E91CAC0BAC0093C75F /* Contents.m in Sources */ = {isa = PBXBuildFile; fileRef = 525A46E81CAC0BAC0093C75F /* Contents.m */; };
-		526114871CA2D7CD0012244E /* TabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 526114841CA2D7CC0012244E /* TabBar.m */; };
-		526114881CA2D7CD0012244E /* TabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 526114861CA2D7CC0012244E /* TabBarButton.m */; };
 		5261148E1CA2D9090012244E /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5261148D1CA2D9090012244E /* NavigationController.m */; };
 		526114911CA2D9160012244E /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526114901CA2D9160012244E /* TabBarViewController.m */; };
 		5266BEB81CA815B1005DF4A6 /* NSObject+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266BEB71CA815B1005DF4A6 /* NSObject+Log.m */; };
 		5267DCCB1CA527C4007139BD /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5267DCC61CA527C4007139BD /* MainViewController.m */; };
 		5268FC091C9FD17500E70BCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5268FC081C9FD17500E70BCE /* main.m */; };
 		5268FC0C1C9FD17500E70BCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5268FC0B1C9FD17500E70BCE /* AppDelegate.m */; };
-		5268FC121C9FD17500E70BCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5268FC101C9FD17500E70BCE /* Main.storyboard */; };
 		5268FC151C9FD17500E70BCE /* Novel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5268FC131C9FD17500E70BCE /* Novel.xcdatamodeld */; };
 		5268FC171C9FD17500E70BCE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5268FC161C9FD17500E70BCE /* Assets.xcassets */; };
 		5268FC1A1C9FD17500E70BCE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5268FC181C9FD17500E70BCE /* LaunchScreen.storyboard */; };
@@ -98,7 +95,6 @@
 		52DF8B341CA13158001331CC /* ReaderToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DF8B331CA13158001331CC /* ReaderToolBar.m */; };
 		52E541501CB62041009C6159 /* ReaderTop.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E5414F1CB62041009C6159 /* ReaderTop.m */; };
 		52E541541CB6207D009C6159 /* ReaderTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E541531CB6207D009C6159 /* ReaderTop.xib */; };
-		52F442141CBE715D00EF2BDB /* bookShelf.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52F442131CBE715D00EF2BDB /* bookShelf.plist */; };
 		52F442171CBE81C600EF2BDB /* BookShelf.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F442161CBE81C600EF2BDB /* BookShelf.m */; };
 		52FBDA011CA7B45200C960C6 /* RankingBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 52FBDA001CA7B45200C960C6 /* RankingBook.m */; };
 		52FBDA051CA7BB7500C960C6 /* AFNetworkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 52FBDA041CA7BB7500C960C6 /* AFNetworkTool.m */; };
@@ -129,10 +125,6 @@
 		5257A4081CA176F1006D7EF4 /* ReaderSettingBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderSettingBar.m; path = BookReader/View/ReaderSettingBar.m; sourceTree = "<group>"; };
 		525A46E71CAC0BAC0093C75F /* Contents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contents.h; path = BookReader/Model/Contents.h; sourceTree = "<group>"; };
 		525A46E81CAC0BAC0093C75F /* Contents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Contents.m; path = BookReader/Model/Contents.m; sourceTree = "<group>"; };
-		526114831CA2D7CC0012244E /* TabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabBar.h; path = Main/View/TabBar/TabBar.h; sourceTree = "<group>"; };
-		526114841CA2D7CC0012244E /* TabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabBar.m; path = Main/View/TabBar/TabBar.m; sourceTree = "<group>"; };
-		526114851CA2D7CC0012244E /* TabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabBarButton.h; path = Main/View/TabBar/TabBarButton.h; sourceTree = "<group>"; };
-		526114861CA2D7CC0012244E /* TabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabBarButton.m; path = Main/View/TabBar/TabBarButton.m; sourceTree = "<group>"; };
 		5261148C1CA2D9090012244E /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NavigationController.h; path = Main/Controller/NavigationController/NavigationController.h; sourceTree = "<group>"; };
 		5261148D1CA2D9090012244E /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NavigationController.m; path = Main/Controller/NavigationController/NavigationController.m; sourceTree = "<group>"; };
 		5261148F1CA2D9160012244E /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabBarViewController.h; path = Main/Controller/UITabBarController/TabBarViewController.h; sourceTree = "<group>"; };
@@ -145,7 +137,6 @@
 		5268FC081C9FD17500E70BCE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5268FC0A1C9FD17500E70BCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5268FC0B1C9FD17500E70BCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		5268FC111C9FD17500E70BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5268FC141C9FD17500E70BCE /* Novel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Novel.xcdatamodel; sourceTree = "<group>"; };
 		5268FC161C9FD17500E70BCE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5268FC191C9FD17500E70BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -282,7 +273,6 @@
 		52E5414E1CB62041009C6159 /* ReaderTop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReaderTop.h; path = BookReader/View/ReaderTop.h; sourceTree = "<group>"; };
 		52E5414F1CB62041009C6159 /* ReaderTop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReaderTop.m; path = BookReader/View/ReaderTop.m; sourceTree = "<group>"; };
 		52E541531CB6207D009C6159 /* ReaderTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ReaderTop.xib; path = BookReader/View/ReaderTop.xib; sourceTree = "<group>"; };
-		52F442131CBE715D00EF2BDB /* bookShelf.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = bookShelf.plist; sourceTree = "<group>"; };
 		52F442151CBE81C600EF2BDB /* BookShelf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BookShelf.h; path = Main/Model/BookShelf.h; sourceTree = "<group>"; };
 		52F442161CBE81C600EF2BDB /* BookShelf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BookShelf.m; path = Main/Model/BookShelf.m; sourceTree = "<group>"; };
 		52FBD9FF1CA7B45200C960C6 /* RankingBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RankingBook.h; path = Main/Model/RankingBook.h; sourceTree = "<group>"; };
@@ -371,7 +361,6 @@
 				529F71D01CA3E1580073F187 /* BookshelfViewController */,
 				529F71CE1CA3E1120073F187 /* BookStoreViewController */,
 				529F71D11CA3E1630073F187 /* BookListViewController */,
-				529F71D21CA3E1750073F187 /* SearchViewController */,
 				529F71CF1CA3E14F0073F187 /* SearchViewController */,
 				5257A40D1CA1860A006D7EF4 /* NavigationController */,
 				5261147A1CA2D3EE0012244E /* UITabBarController */,
@@ -382,7 +371,6 @@
 		526114801CA2D7B10012244E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				526114821CA2D7BE0012244E /* TabBar */,
 				52D4807B1CA7A93300A27EC0 /* RankingCell.h */,
 				52D4807C1CA7A93300A27EC0 /* RankingCell.m */,
 				52D4807D1CA7A93300A27EC0 /* RankingCell.xib */,
@@ -410,17 +398,6 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
-		526114821CA2D7BE0012244E /* TabBar */ = {
-			isa = PBXGroup;
-			children = (
-				526114831CA2D7CC0012244E /* TabBar.h */,
-				526114841CA2D7CC0012244E /* TabBar.m */,
-				526114851CA2D7CC0012244E /* TabBarButton.h */,
-				526114861CA2D7CC0012244E /* TabBarButton.m */,
-			);
-			name = TabBar;
-			sourceTree = "<group>";
-		};
 		5268FBFB1C9FD17500E70BCE = {
 			isa = PBXGroup;
 			children = (
@@ -445,10 +422,8 @@
 				5268FC241C9FD23500E70BCE /* BookReader */,
 				5268FC0A1C9FD17500E70BCE /* AppDelegate.h */,
 				5268FC0B1C9FD17500E70BCE /* AppDelegate.m */,
-				5268FC101C9FD17500E70BCE /* Main.storyboard */,
 				5268FC161C9FD17500E70BCE /* Assets.xcassets */,
 				5268FC181C9FD17500E70BCE /* LaunchScreen.storyboard */,
-				52F442131CBE715D00EF2BDB /* bookShelf.plist */,
 				5268FC1B1C9FD17500E70BCE /* Info.plist */,
 				5268FC131C9FD17500E70BCE /* Novel.xcdatamodeld */,
 				5268FC071C9FD17500E70BCE /* Supporting Files */,
@@ -766,13 +741,6 @@
 			name = BookListViewController;
 			sourceTree = "<group>";
 		};
-		529F71D21CA3E1750073F187 /* SearchViewController */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = SearchViewController;
-			sourceTree = "<group>";
-		};
 		52FBDA021CA7BB0A00C960C6 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -843,7 +811,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5257085A1CAE3FDD008CB833 /* MBProgressHUD.bundle in Resources */,
-				52F442141CBE715D00EF2BDB /* bookShelf.plist in Resources */,
 				5257A4061CA176DF006D7EF4 /* ReaderSettingBar.xib in Resources */,
 				52E541541CB6207D009C6159 /* ReaderTop.xib in Resources */,
 				528C03841CA9091B003A1A6F /* TopCell.xib in Resources */,
@@ -852,7 +819,6 @@
 				5268FC171C9FD17500E70BCE /* Assets.xcassets in Resources */,
 				5268FCDD1C9FD3D900E70BCE /* MJRefresh.bundle in Resources */,
 				52D4807F1CA7A93300A27EC0 /* RankingCell.xib in Resources */,
-				5268FC121C9FD17500E70BCE /* Main.storyboard in Resources */,
 				526DBBFA1CB27F5600FAE45F /* DirectoryCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,7 +832,6 @@
 			files = (
 				5268FCD71C9FD3D900E70BCE /* MJRefreshBackGifFooter.m in Sources */,
 				5268FCEF1C9FD3D900E70BCE /* UIImageView+HighlightedWebCache.m in Sources */,
-				526114881CA2D7CD0012244E /* TabBarButton.m in Sources */,
 				52E541501CB62041009C6159 /* ReaderTop.m in Sources */,
 				5268FCF11C9FD3D900E70BCE /* UIView+WebCacheOperation.m in Sources */,
 				5268FCE81C9FD3D900E70BCE /* SDWebImageDownloaderOperation.m in Sources */,
@@ -878,7 +843,6 @@
 				5268FCE01C9FD3D900E70BCE /* UIScrollView+MJRefresh.m in Sources */,
 				5268FCD21C9FD3D900E70BCE /* MJRefreshFooter.m in Sources */,
 				5268FCDE1C9FD3D900E70BCE /* MJRefreshConst.m in Sources */,
-				526114871CA2D7CD0012244E /* TabBar.m in Sources */,
 				52D4807E1CA7A93300A27EC0 /* RankingCell.m in Sources */,
 				525A46E91CAC0BAC0093C75F /* Contents.m in Sources */,
 				5268FCDF1C9FD3D900E70BCE /* UIScrollView+MJExtension.m in Sources */,
@@ -955,14 +919,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		5268FC101C9FD17500E70BCE /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5268FC111C9FD17500E70BCE /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		5268FC181C9FD17500E70BCE /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

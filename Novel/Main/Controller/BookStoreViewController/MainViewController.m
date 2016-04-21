@@ -49,8 +49,6 @@ static CGFloat const maxTitleScale = 1.3;
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;  //导航栏的背景色是黑色
     
-    self.title = @"书城";
-    
     [self setupTitleScrollView];
     [self setupContentScrollView];
     [self addChildViewController];
@@ -69,8 +67,8 @@ static CGFloat const maxTitleScale = 1.3;
 - (void)setupTitleScrollView
 {
     // 判断是否存在导航控制器来判断y值
-    CGFloat y = self.navigationController ? navBarH : 0;
-    CGRect rect = CGRectMake(0, y, ScreenW, titleH);
+//    CGFloat y = self.navigationController ? navBarH : 0;
+    CGRect rect = CGRectMake(0, 0, ScreenW, titleH);
     
     UIScrollView *titleScrollView = [[UIScrollView alloc] initWithFrame:rect];
     titleScrollView.backgroundColor = [UIColor whiteColor];
