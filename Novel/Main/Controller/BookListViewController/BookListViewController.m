@@ -21,5 +21,8 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;  //导航栏的背景色是黑色
 }
 
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
 @end

@@ -17,8 +17,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+}
+
++ (void)initialize
+{
     //导航栏
     UINavigationBar *bar = [UINavigationBar appearance];
     [bar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
@@ -42,10 +44,12 @@
 /**
  *  重写这个方法，能拦截所有的Push操作
  */
-//-(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-//{
+-(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
 //    viewController.hidesBottomBarWhenPushed = YES;
-//    [super pushViewController:viewController animated:animated];
-//}
+    [super pushViewController:viewController animated:animated];
+    
+}
+
 
 @end

@@ -44,8 +44,6 @@
 {
     [super viewDidLoad];
     
-    self.view.frame = CGRectMake(0, 64, ScreenW, ScreenH);
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(backVc)];
     
     self.single.gid = self.rankingBook.gid;
@@ -55,14 +53,24 @@
     
     
     [self.view addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(backVc)]];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.tabBarController.tabBar.hidden = YES;
+    
     self.single.isAtIntroVc = YES;
     
     [self setupData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.tabBarController.tabBar.hidden = NO;
 }
 
 - (void)backVc
@@ -199,7 +207,7 @@
 {
     DiretoryView *diretoryView = [[DiretoryView alloc] initWithDirtoryView];
     
-    diretoryView.frame = CGRectMake(0, ScreenH, ScreenW, ScreenH-64);
+    diretoryView.frame = CGRectMake(0, ScreenH, ScreenW, 0);
     
     _diretoryView = diretoryView;
     
@@ -207,7 +215,7 @@
     
     [UIView animateWithDuration:0.3 animations:^{
         
-        diretoryView.frame = CGRectMake(0, 0, ScreenW, ScreenH-64);
+        diretoryView.frame = CGRectMake(0, 0, ScreenW, ScreenH);
         
     }];
     

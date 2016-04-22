@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "TabBarViewController.h"
+#import "NavigationController.h"
 
 @interface AppDelegate ()
 
@@ -28,7 +29,7 @@
     
     //1.0创建导航控制器
     TabBarViewController *tab = [[TabBarViewController alloc] init];
-    
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:tab];
     
     //设置窗口的根控制器
     self.window.rootViewController = tab;

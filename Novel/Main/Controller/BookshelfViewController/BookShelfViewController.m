@@ -115,6 +115,7 @@
     if (!_tableView)
     {
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenW, ScreenH) style:UITableViewStylePlain];
+        _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
         _tableView.delegate = self;
         _tableView.dataSource = self;
         self.tableView.rowHeight = 60;
@@ -126,14 +127,14 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;  //导航栏的背景色是黑色
-    
     [self setupTableView];
-    
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;  //导航栏的背景色是黑色
+    
     self.single.isAtIntroVc = NO;
     
     if (!self.single.books) return; //如果为空直接返回

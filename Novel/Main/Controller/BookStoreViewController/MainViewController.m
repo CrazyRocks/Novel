@@ -15,7 +15,6 @@
 
 
 static CGFloat const titleH = 44;
-static CGFloat const navBarH = 64;
 static CGFloat const maxTitleScale = 1.3;
 
 //#define ScreenW [UIScreen mainScreen].bounds.size.width
@@ -61,7 +60,11 @@ static CGFloat const maxTitleScale = 1.3;
     self.contentScrollView.delegate = self;
 }
 
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+}
 
 #pragma mark - 设置头部标题栏
 - (void)setupTitleScrollView

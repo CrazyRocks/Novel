@@ -26,6 +26,7 @@
 
 @property(nonatomic,assign) BOOL isAtIntroVc;
 @property(nonatomic,assign) BOOL isReadAtDirView;
+@property(nonatomic,assign) BOOL isPush;
 
 +(instancetype)shareSingle;
 

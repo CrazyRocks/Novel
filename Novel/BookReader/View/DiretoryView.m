@@ -33,7 +33,7 @@
 {
     if (self = [super init])
     {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenW, ScreenH-64)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenW, ScreenH - navBarH)];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         
@@ -163,15 +163,6 @@
     }
     
 }
-
-
-
-
-
-
-
-
-
 
 
 

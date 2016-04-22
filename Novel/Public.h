@@ -17,4 +17,7 @@
 
 #define token @"doubi"
 
+static CGFloat const navBarH = 64;
+static CGFloat const tabBarH = 49;
+
 #endif /* Public_h */

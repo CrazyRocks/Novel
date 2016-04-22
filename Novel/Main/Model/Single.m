@@ -35,6 +35,7 @@
         self.updateTime = nil;
         self.isAtIntroVc = NO;
         self.isReadAtDirView = NO;
+        self.isPush = NO;
         self.indexBook = 0;
         self.index = 0;
         self.contentOffsetUp = 0;

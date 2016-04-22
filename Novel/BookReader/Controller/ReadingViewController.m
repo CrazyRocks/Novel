@@ -60,8 +60,6 @@
 
 @property(nonatomic,assign) BOOL isIndex;
 
-@property(nonatomic,strong) NSIndexPath *indexPath;
-
 @property(nonatomic,weak) DiretoryView *diretoryView;
 
 @end
@@ -119,6 +117,11 @@
     
     self.single.contentOffsetUp = 0;
     self.single.contentoffsetDown = 0;
+}
+- (BOOL)hidesBottomBarWhenPushed
+{
+    [super hidesBottomBarWhenPushed];
+    return YES;
 }
 
 //tableView
@@ -206,9 +209,8 @@
     }];
 }
 // 显示设置
-- (void)showReaderSettingBar:(NSIndexPath *)indexPath
+- (void)showReaderSettingBar
 {
-    _indexPath = indexPath;
     
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     
@@ -365,7 +367,6 @@
         self.tableView.mj_footer.hidden = YES;
         return;
     }
-    
     if (_isIndex == NO)
     {
         
@@ -381,12 +382,12 @@
             chapters.chapter = content;
             [self.group addObject:group];
             
-            
             self.tableView.mj_footer.hidden = NO;
             
             [self.tableView.mj_footer endRefreshing]; //停止刷新
             //刷新
             [self.tableView reloadData];
+            
             
         } error:^(NSError *error) {
             
@@ -394,6 +395,8 @@
     }
     else
     {
+        [MBProgressHUD showMessage:@""];
+        
         _nextIndex++;
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_nextIndex];
@@ -412,6 +415,8 @@
             [self.tableView.mj_footer endRefreshing]; //停止刷新
             //刷新
             [self.tableView reloadData];
+            
+            [MBProgressHUD hideHUD];
             
         } error:^(NSError *error) {
             
@@ -487,7 +492,7 @@
 #pragma mark - tableViewdelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self showReaderSettingBar:indexPath];
+    [self showReaderSettingBar];
 }
 /**
  *  tableview停止滚动时打印出contentOffset
@@ -676,7 +681,7 @@
         
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         
-        _diretoryView.frame = CGRectMake(0, 0, ScreenW, ScreenH);
+        _diretoryView.frame = CGRectMake(0, 0, ScreenW, CGRectGetMaxY(self.view.frame));
         
     }];
     
@@ -695,7 +700,7 @@
         
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         
-        _diretoryView.frame = CGRectMake(0, ScreenH, ScreenW, ScreenH-64);
+        _diretoryView.frame = CGRectMake(0, ScreenH, ScreenW, ScreenH);
         
         
     } completion:^(BOOL finished) {

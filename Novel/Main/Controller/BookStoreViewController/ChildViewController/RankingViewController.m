@@ -13,16 +13,24 @@
 #import "RankingCell.h"
 #import "RankingBook.h"
 #import "IntroViewController.h"
+#import "Single.h"
 
 @interface RankingViewController ()
 
-//@property (strong,nonatomic) NSMutableArray *rankingList;
-//
-//@property(nonatomic,assign) int index;
+@property(nonatomic,strong) Single *single;
 
 @end
 
 @implementation RankingViewController
+
+- (Single *)single
+{
+    if (!_single)
+    {
+        _single = [Single shareSingle];
+    }
+    return _single;
+}
 
 - (void)viewDidLoad
 {
@@ -129,12 +137,12 @@
 {
     RankingBook *ranking = self.rankingList[indexPath.row];
     
-    
 //    NSString *url = [NSString stringWithFormat:@"http://m.baidu.com/tc?ajax=1&appui=alaxs&dir=1&gid=%@",ranking.gid];
     
     IntroViewController *intro = [IntroViewController new];
     
     intro.rankingBook = ranking;
+    
     
     [self.navigationController pushViewController:intro animated:YES];
 }
