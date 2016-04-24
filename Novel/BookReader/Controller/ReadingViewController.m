@@ -58,8 +58,6 @@
 
 @property(nonatomic,assign) NSInteger nextIndex;
 
-@property(nonatomic,assign) BOOL isIndex;
-
 @property(nonatomic,weak) DiretoryView *diretoryView;
 
 @end
@@ -83,7 +81,7 @@
         // 初始化
         //1.路径
         NSString *filePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist",self.single.title]];
-       
+        
         // 2.加载数组
         NSArray *dictArray = [NSArray arrayWithContentsOfFile:filePath];
         
@@ -142,16 +140,28 @@
     UINib *cellNib = [UINib nibWithNibName:@"ReadCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:@"FDFeedCell"];
     
-    
-    
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(preChapter)];
+    MJRefreshGifHeader *header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(preChapter)];
+    
+    // 设置文字
+    [header setTitle:@"" forState:MJRefreshStateIdle];
+    [header setTitle:@"" forState:MJRefreshStatePulling];
+    [header setTitle:@"" forState:MJRefreshStateRefreshing];
+    
+    self.tableView.mj_header = header;
     
     //开始刷新
     [self jumpDir:_index];//第n章
     
+    MJRefreshAutoGifFooter *footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(nextChapter)];
+    
     //加载更多
-    self.tableView.mj_footer = [MJRefreshAutoGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(nextChapter)];
+    // 设置文字
+    [footer setTitle:@"" forState:MJRefreshStateIdle];
+    [footer setTitle:@"" forState:MJRefreshStateRefreshing];
+    [footer setTitle:@"" forState:MJRefreshStateNoMoreData];
+    
+    self.tableView.mj_footer = footer;
 }
 
 //状态栏和导航栏
@@ -274,87 +284,57 @@
  */
 - (void)preChapter
 {
-    if (_isIndex == NO)
+    if (_preIndex == 0)
     {
-        //没有上一章
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_index];
-        
-        BookChapter *group = self.totolList[indexPath.section];
-        Contents *chapters = group.contentList[indexPath.row];
-        
-        [Contents getURLString:chapters.detailURL success:^(NSString *content) {
-            
-            chapters.chapter = content;
-            NSMutableArray *dictArray = [NSMutableArray arrayWithObject:group];
-            
-            if (self.group.count == 0)
-            {
-                self.group = dictArray;
-            }
-            else
-            {
-                [self.group insertObject:group atIndex:0];
-            }
-            
-            
-            [self.tableView reloadData];
-            
-            //停止刷新
-            [self.tableView.mj_header endRefreshing];
-            
-            self.tableView.mj_header.hidden = YES;
-            
-        } error:^(NSError *error) {
-            
-        }];
-    }
-    else
-    {
-        if (_preIndex == 0)
-        {
-            [self.tableView.mj_header endRefreshing];
-            self.tableView.mj_header.hidden = YES;
-            return;
-        }
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_preIndex-1];
-        
-        BookChapter *group = self.totolList[indexPath.section];
-        Contents *chapters = group.contentList[indexPath.row];
-        
-        
-        [Contents getURLString:chapters.detailURL success:^(NSString *content) {
-            
-            chapters.chapter = content;
-            NSMutableArray *dictArray = [NSMutableArray arrayWithObject:group];
-            
-            if (self.group.count == 0)
-            {
-                self.group = dictArray;
-            }
-            else
-            {
-                [self.group insertObject:group atIndex:0];
-            }
-            
-            
-            [self.tableView reloadData];
-            
-            //停止刷新
-            [self.tableView.mj_header endRefreshing];
-            
-            _preIndex --;
-            if (_preIndex == 0)
-            {
-                self.tableView.mj_header.hidden = YES;
-            }
-            
-        } error:^(NSError *error) {
-            
-        }];
-        
+        [self.tableView.mj_header endRefreshing];
+        self.tableView.mj_header.hidden = YES;
+        return;
     }
     
+    [MBProgressHUD showMessage:@""];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_preIndex-1];
+    
+    BookChapter *group = self.totolList[indexPath.section];
+    Contents *chapters = group.contentList[indexPath.row];
+    
+    
+    [Contents getURLString:chapters.detailURL success:^(NSString *content) {
+        
+        
+        chapters.chapter = content;
+        NSMutableArray *dictArray = [NSMutableArray arrayWithObject:group];
+        
+        if (self.group.count == 0)
+        {
+            self.group = dictArray;
+        }
+        else
+        {
+            [self.group insertObject:group atIndex:0];
+        }
+        
+        
+        [self.tableView reloadData];
+        
+        [MBProgressHUD hideHUD];
+        
+        //停止刷新
+        [self.tableView.mj_header endRefreshing];
+        
+        _preIndex --;
+        if (_preIndex == 0)
+        {
+            self.tableView.mj_header.hidden = YES;
+        }
+        
+    } error:^(NSError *error) {
+        
+        [MBProgressHUD hideHUD];
+        
+        [self alertWithError];
+        
+    }];
 }
 
 /**
@@ -367,62 +347,48 @@
         self.tableView.mj_footer.hidden = YES;
         return;
     }
-    if (_isIndex == NO)
-    {
+    [MBProgressHUD showMessage:@""];
+    
+    _nextIndex++;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_nextIndex];
+    
+    BookChapter *group = self.totolList[indexPath.section];
+    Contents *chapters = group.contentList[indexPath.row];
+    
+    [Contents getURLString:chapters.detailURL success:^(NSString *content) {
         
-        _index++;
+        chapters.chapter = content;
+        [self.group addObject:group];
         
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_index];
         
-        BookChapter *group = self.totolList[indexPath.section];
-        Contents *chapters = group.contentList[indexPath.row];
+        self.tableView.mj_footer.hidden = NO;
         
-        [Contents getURLString:chapters.detailURL success:^(NSString *content) {
-            
-            chapters.chapter = content;
-            [self.group addObject:group];
-            
-            self.tableView.mj_footer.hidden = NO;
-            
-            [self.tableView.mj_footer endRefreshing]; //停止刷新
-            //刷新
-            [self.tableView reloadData];
-            
-            
-        } error:^(NSError *error) {
-            
-        }];
-    }
-    else
-    {
-        [MBProgressHUD showMessage:@""];
+        [self.tableView.mj_footer endRefreshing]; //停止刷新
+        //刷新
+        [self.tableView reloadData];
         
-        _nextIndex++;
+        [MBProgressHUD hideHUD];
         
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:_nextIndex];
+    } error:^(NSError *error) {
         
-        BookChapter *group = self.totolList[indexPath.section];
-        Contents *chapters = group.contentList[indexPath.row];
-        
-        [Contents getURLString:chapters.detailURL success:^(NSString *content) {
-            
-            chapters.chapter = content;
-            [self.group addObject:group];
-            
-            
-            self.tableView.mj_footer.hidden = NO;
-            
-            [self.tableView.mj_footer endRefreshing]; //停止刷新
-            //刷新
-            [self.tableView reloadData];
-            
-            [MBProgressHUD hideHUD];
-            
-        } error:^(NSError *error) {
-            
-        }];
-    }
+        [MBProgressHUD hideHUD];
+    }];
+    
+}
 
+- (void)alertWithError
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"网络出问题了啦" message:@"请检查网络哦" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        //点击按钮返回
+        [self backBVc];
+        
+    }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -585,11 +551,11 @@
     {
         self.tableView.mj_header.hidden = NO;
     }
+    [MBProgressHUD showMessage:@""];
     
     [self.group removeAllObjects]; //清空前面的数据
     
     _preIndex = _nextIndex = index;//赋值
-    _isIndex = YES;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:index];
     
@@ -633,8 +599,13 @@
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];//跳转到最开始
         }
         
+        [MBProgressHUD hideHUD];
+        
     } error:^(NSError *error) {
         
+        [self alertWithError];
+        
+        [MBProgressHUD hideHUD];
     }];
 }
 

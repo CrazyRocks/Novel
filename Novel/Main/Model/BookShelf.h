@@ -15,7 +15,7 @@
 @property(nonatomic,copy) NSString *coverImage;//封面图片地址
 @property(nonatomic,copy) NSString *lastChapter;
 @property(nonatomic,copy) NSString *updateTIme;
-@property(nonatomic,copy) NSString *index; //读到的位置
+@property(nonatomic,copy) NSNumber *index; //读到的位置
 
 
 - (instancetype)initWithDict:(NSDictionary *)dict;

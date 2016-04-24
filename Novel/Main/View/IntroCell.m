@@ -171,7 +171,7 @@
         [item setObject:imageName forKey:@"coverImage"];
         [item setObject:self.single.lastChapter forKey:@"lastChapter"];
         [item setObject:self.single.updateTime forKey:@"optimize_update_time"];
-        [item setObject:@"1" forKey:@"index"];
+        [item setObject:@(0) forKey:@"index"];
         [item setObject:self.rankingBook.gid forKey:@"gid"];
         
         [bookShelf addObject:item];
@@ -184,7 +184,7 @@
         book.coverImage = imageName;
         book.lastChapter = self.single.lastChapter;
         book.updateTIme = self.single.updateTime;
-        book.index = @"1";
+        book.index = @(0);
         
     }
     else
@@ -209,7 +209,7 @@
         
         [item setObject:self.single.updateTime forKey:@"optimize_update_time"];
         
-        [item setObject:@"1" forKey:@"index"];
+        [item setObject:@(0) forKey:@"index"];
         [item setObject:self.rankingBook.gid forKey:@"gid"];
         
         [bookShelf addObject:item];
@@ -221,7 +221,7 @@
         book.coverImage = imageName;
         book.lastChapter = self.single.lastChapter;
         book.updateTIme = self.single.updateTime;
-        book.index = @"1";
+        book.index = @(0);
     }
     
     //发出通知

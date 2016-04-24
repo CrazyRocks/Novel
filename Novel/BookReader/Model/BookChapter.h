@@ -11,7 +11,7 @@
 @interface BookChapter : NSObject
 
 
-@property(nonatomic,copy) NSString *index;
+@property(nonatomic,copy) NSNumber *index;  //这里不获取Json里的index,有时候返回的Index不对，直接for循环++
 @property(nonatomic,copy) NSString *cid;
 @property(nonatomic,copy) NSString *text; //章节名称
 @property(nonatomic,copy) NSString *href;

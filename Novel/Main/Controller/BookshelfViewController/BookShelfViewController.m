@@ -253,7 +253,7 @@
     
     BookShelf *bookShelf = self.bookList[indexPath.row];
     
-    read.index = [bookShelf.index integerValue] - 1;
+    read.index = [bookShelf.index integerValue];
     
     self.single.title = bookShelf.title;
     self.single.indexBook = indexPath.row;

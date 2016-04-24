@@ -41,7 +41,7 @@
     
     self.contentLabel.text = content.chapter;
     self.contentLabel.backgroundColor = [UIColor clearColor];
-    self.contentLabel.font = [UIFont fontWithName:@"STHeitiSC-Light" size:17.f];
+    self.contentLabel.font = [UIFont fontWithName:@"STHeitiSC-Light" size:18.f];
 }
 - (void)setBookChapter:(BookChapter *)bookChapter
 {

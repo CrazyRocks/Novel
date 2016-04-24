@@ -26,7 +26,7 @@
     
     self.iconView.image = [UIImage imageNamed:@"directory_not_previewed"];
     
-    self.indexLabel.text = directory.index;
+    self.indexLabel.text = [NSString stringWithFormat:@"%@",directory.index];;
     
     self.directoryLabel.text = directory.text;
 }

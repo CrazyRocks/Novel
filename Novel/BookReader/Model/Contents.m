@@ -31,7 +31,9 @@
 +(void)getURLString:(NSString *)URLString success:(void (^)(NSString *content))success error:(void (^)(NSError *error))error
 {
     NSString *url = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-    NSAssert(success != nil, @"必行传完成回调");
+    NSAssert(success != nil, @"必须完成回调");
+    NSAssert(error != nil,@"必须完成回调");
+    
     [[AFNetworkTool shareNetworkTool] GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable responseObject) {
         
         NSDictionary *data = [responseObject objectForKey:@"data"];
@@ -45,11 +47,14 @@
         // 完成回调
         success (contentString.copy);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error = %@",error);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull err) {
+        
+        //回调
+        error (err);
+        
     }];
+    
 }
-
 
 /*
 -(NSString *)filterHTML:(NSString *)html

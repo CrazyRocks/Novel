@@ -118,7 +118,7 @@
                 
                 NSMutableDictionary *item = [NSMutableDictionary new];
                 
-                [item setObject:bookChapter.index forKey:@"index"];
+                [item setObject:@(i) forKey:@"index"];
                 [item setObject:bookChapter.cid forKey:@"cid"];
                 [item setObject:bookChapter.text forKey:@"text"];
                 [item setObject:bookChapter.href forKey:@"href"];
@@ -232,7 +232,7 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:self.rankingBook.title])
     {
         //已经加入
-        read.index = self.single.index - 1;
+        read.index = self.single.index;
     }
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:read];
